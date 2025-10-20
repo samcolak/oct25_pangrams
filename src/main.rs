@@ -16,17 +16,17 @@ fn epoch() -> i64 {
 
 fn get_distribution(stringin: &str) -> HashMap<char, u64> {
 
-    let mut distribution_map: HashMap<char, u64> = HashMap::new();
+    let mut _map: HashMap<char, u64> = HashMap::new();
 
     for letter in stringin.to_lowercase().chars() {
-        let _count = match distribution_map.get(&letter) {
+        let _count = match _map.get(&letter) {
             Some(_c) => _c + 1,
             _ => 1
         };
-        distribution_map.insert(letter, _count);
+        _map.insert(letter, _count);
     }
 
-    distribution_map
+    _map
 
 }
 
@@ -45,10 +45,10 @@ fn check_pangram(distin: HashMap<char, u64>) -> PangramStatus {
     let mut _count = 0;
     let mut _total = 0; 
 
-    for _char in CHARSTOCHECK.chars() {
-        if let Some(_c) = distin.get(&_char) {
+    for (_char, _counter) in distin.iter() {
+        if CHARSTOCHECK.contains(*_char) {
             _count += 1;
-            _total += _c;
+            _total += _counter;            
         }
     }
 
