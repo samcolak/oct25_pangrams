@@ -65,7 +65,6 @@ fn check_pangram(distin: HashMap<char, u64>) -> PangramStatus {
 
 fn main() {
 
-    let mut _counters: [u16; 3] = [0; 3];   
     let _path = "./list.json";    
  
     let _contents = match fs::read_to_string(_path) {
@@ -85,12 +84,13 @@ fn main() {
                 Value::Null
             }
         };
-
-        let _starttime = epoch();
-
+ 
         if _json_version != Value::Null {
 
             let _array_of_strings = _json_version.as_array().unwrap();
+            let _starttime = epoch();
+
+            let mut _counters: [u16; 3] = [0; 3];               
 
             for _listitem in _array_of_strings {
 
@@ -102,15 +102,19 @@ fn main() {
 
             }
 
+            let _endtime = epoch();    
+
+            println!("Result of Panagram Counter by Scolak\n");
+            println!("Timetaken:                      {:>3} ms", (_endtime - _starttime));
+            println!("Amount of non Panagrams:        {:>3}", _counters[PangramStatus::NotEventClose as usize]);    
+            println!("Amount of imperfect Panagrams:  {:>3}", _counters[PangramStatus::Imperfect as usize]);
+            println!("Amount of perfect Panagrams:    {:>3}", _counters[PangramStatus::Perfect as usize]);
+
+        } else {
+
+            println!("No list to process");
+
         }
-
-        let _endtime = epoch();    
-
-        println!("Result of Panagram Counter by Scolak\n");
-        println!("Timetaken:                      {:>3} ms", (_endtime - _starttime));
-        println!("Amount of non Panagrams:        {:>3}", _counters[PangramStatus::NotEventClose as usize]);    
-        println!("Amount of imperfect Panagrams:  {:>3}", _counters[PangramStatus::Imperfect as usize]);
-        println!("Amount of perfect Panagrams:    {:>3}", _counters[PangramStatus::Perfect as usize]);
 
     } else {
 
