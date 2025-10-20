@@ -87,10 +87,12 @@ fn main() {
  
         if _json_version != Value::Null {
 
+            let mut _counters: [u16; 3] = [0; 3];               
+
             let _array_of_strings = _json_version.as_array().unwrap();
             let _starttime = epoch();
 
-            let mut _counters: [u16; 3] = [0; 3];               
+            // start the processing loop
 
             for _listitem in _array_of_strings {
 
@@ -102,10 +104,12 @@ fn main() {
 
             }
 
+            // finished...
+
             let _endtime = epoch();    
 
             println!("Result of Panagram Counter by Scolak\n");
-            println!("Timetaken:                      {:>3} ms", (_endtime - _starttime));
+            println!("Time taken:                     {:>3} ms", (_endtime - _starttime));
             println!("Amount of non Panagrams:        {:>3}", _counters[PangramStatus::NotEventClose as usize]);    
             println!("Amount of imperfect Panagrams:  {:>3}", _counters[PangramStatus::Imperfect as usize]);
             println!("Amount of perfect Panagrams:    {:>3}", _counters[PangramStatus::Perfect as usize]);
