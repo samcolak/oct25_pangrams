@@ -7,30 +7,6 @@ use serde_json::{Value};
 static CHARSTOCHECK: &str = "abcdefghijklmnopqrstuvwxyz";
 
 
-fn epoch() -> i64 {
-    match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
-        Ok(n) => n.as_millis().try_into().unwrap(),
-        Err(_) => panic!("SystemTime before UNIX EPOCH!"),
-    }
-}
-
-fn get_distribution(stringin: &str) -> HashMap<char, u64> {
-
-    let mut _map: HashMap<char, u64> = HashMap::new();
-
-    for letter in stringin.to_lowercase().chars() {
-        let _count = match _map.get(&letter) {
-            Some(_c) => _c + 1,
-            _ => 1
-        };
-        _map.insert(letter, _count);
-    }
-
-    _map
-
-}
-
-
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
 #[repr(usize)]
 enum PangramStatus {
@@ -40,18 +16,36 @@ enum PangramStatus {
 }
 
 
-fn check_pangram(distin: HashMap<char, u64>) -> PangramStatus {
+fn epoch() -> i64 {
+    match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
+        Ok(n) => n.as_millis().try_into().unwrap(),
+        Err(_) => panic!("SystemTime before UNIX EPOCH!"),
+    }
+}
 
+
+fn get_distribution(stringin: &str) -> HashMap<char, u64> {
+    let mut _map: HashMap<char, u64> = HashMap::new();
+    for letter in stringin.to_lowercase().chars() {
+        let _count = match _map.get(&letter) {
+            Some(_c) => _c + 1,
+            _ => 1
+        };
+        _map.insert(letter, _count);
+    }
+    _map
+}
+
+
+fn check_pangram(distin: HashMap<char, u64>) -> PangramStatus {
     let mut _count = 0;
     let mut _total = 0; 
-
     for (_char, _counter) in distin.iter() {
         if CHARSTOCHECK.contains(*_char) {
             _count += 1;
             _total += _counter;            
         }
     }
-
     if _count != 26 {
         PangramStatus::NotEventClose        
     } else if _total == 26 {
@@ -59,7 +53,6 @@ fn check_pangram(distin: HashMap<char, u64>) -> PangramStatus {
     } else {
         PangramStatus::Imperfect
     }
-    
 }
 
 
