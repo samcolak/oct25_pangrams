@@ -42,6 +42,7 @@ fn get_distribution(stringin: &str) -> Vec<(char, usize)> {
         .collect();
 
     _frequency
+    
 }
 
 
