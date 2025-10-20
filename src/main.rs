@@ -63,27 +63,16 @@ fn check_pangram(distin: HashMap<char, u64>) -> PangramStatus {
 }
 
 
-#[derive(Default)]
-struct PanagramCounter {
-    none: u64,
-    perfect: u64,
-    imperfect: u64,
-}
-
-
-
 fn main() {
 
+    let mut _counters: [u16; 3] = [0; 3];   
     let _path = "./list.json";    
-    let mut _counter = PanagramCounter::default();
-
+ 
     let _contents = match fs::read_to_string(_path) {
-        Ok(_s) => {
-            // this worked - i received something from the file...
+        Ok(_s) => { // this worked - i received something from the file...
             _s
         },
-        Err(_e) => {
-            // an error returned - log it then return empty string
+        Err(_e) => { // an error returned - log it then return empty string
             "".to_string()
         }
     };
@@ -107,18 +96,9 @@ fn main() {
 
                 let _strval = _listitem.as_str().unwrap().to_string();
                 let _dist = get_distribution(&_strval);
+                let _state = check_pangram(_dist);
 
-                match check_pangram(_dist) {
-                    PangramStatus::Imperfect => {
-                        _counter.imperfect += 1;
-                    },
-                    PangramStatus::Perfect => {
-                        _counter.perfect += 1;
-                    },
-                    _ => {
-                        _counter.none +=1;
-                    }
-                };
+                _counters[_state as usize] += 1;
 
             }
 
@@ -130,9 +110,9 @@ fn main() {
 
     println!("Result of Panagram Counter by Scolak\n");
     println!("Timetaken:                      {:>3} ms", (_endtime - _starttime));
-    println!("Amount of non Panagrams:        {:>3}", _counter.none);    
-    println!("Amount of imperfect Panagrams:  {:>3}", _counter.imperfect);
-    println!("Amount of perfect Panagrams:    {:>3}", _counter.perfect);
+    println!("Amount of non Panagrams:        {:>3}", _counters[PangramStatus::NotEventClose as usize]);    
+    println!("Amount of imperfect Panagrams:  {:>3}", _counters[PangramStatus::Imperfect as usize]);
+    println!("Amount of perfect Panagrams:    {:>3}", _counters[PangramStatus::Perfect as usize]);
 
 }
 
