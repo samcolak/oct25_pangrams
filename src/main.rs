@@ -1,11 +1,18 @@
 
 
-use std::{collections::HashMap, fs};
+use std::{collections::HashMap, fs, time::SystemTime};
 use serde_json::{Value};
 
 
 static CHARSTOCHECK: &str = "abcdefghijklmnopqrstuvwxyz";
 
+
+fn epoch() -> i64 {
+    match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
+        Ok(n) => n.as_millis().try_into().unwrap(),
+        Err(_) => panic!("SystemTime before UNIX EPOCH!"),
+    }
+}
 
 fn get_distribution(stringin: &str) -> HashMap<char, u64> {
 
@@ -35,19 +42,19 @@ enum PangramStatus {
 
 fn check_pangram(distin: HashMap<char, u64>) -> PangramStatus {
 
-    let mut count = 0;
-    let mut total = 0; 
+    let mut _count = 0;
+    let mut _total = 0; 
 
     for _char in CHARSTOCHECK.chars() {
         if let Some(_c) = distin.get(&_char) {
-            count += 1;
-            total += _c;
+            _count += 1;
+            _total += _c;
         }
     }
 
-    if count == 26 {
+    if _count == 26 {
         
-        if total == 26 {
+        if _total == 26 {
             PangramStatus::Perfect        
         } else {
             PangramStatus::Inperfect
@@ -60,14 +67,21 @@ fn check_pangram(distin: HashMap<char, u64>) -> PangramStatus {
 }
 
 
+#[derive(Debug, Default)]
+struct PanagramCounter {
+    none: u16,
+    perfect: u16,
+    imperfect: u16,
+}
 
 
 
 fn main() {
 
-    let file_path = "./list.json";
+    let _path = "./list.json";    
+    let mut _counter = PanagramCounter::default();
 
-    let contents = match fs::read_to_string(file_path) {
+    let _contents = match fs::read_to_string(_path) {
         Ok(_s) => {
             // this worked - i received something from the file...
             _s
@@ -78,9 +92,11 @@ fn main() {
         }
     };
 
-    if !contents.is_empty() {
+    let _starttime = epoch();
 
-        let _json_version: Value = match serde_json::from_str(&contents) {
+    if !_contents.is_empty() {
+
+        let _json_version: Value = match serde_json::from_str(&_contents) {
             Ok(_c) => _c,
             Err(_e) => {
                 Value::Null
@@ -97,9 +113,15 @@ fn main() {
                 let _dist = get_distribution(&_strval);
 
                 match check_pangram(_dist) {
-                    PangramStatus::Inperfect => println!("Inperfect = {_strval}"),
-                    PangramStatus::Perfect => println!("** Perfect = {_strval}"),
-                    _ => {}
+                    PangramStatus::Inperfect => {
+                        _counter.imperfect += 1;
+                    },
+                    PangramStatus::Perfect => {
+                        _counter.perfect += 1;
+                    },
+                    _ => {
+                        _counter.none +=1;
+                    }
                 };
 
             }
@@ -107,6 +129,14 @@ fn main() {
         }
 
     }
+
+    let _endtime = epoch();    
+
+    println!("Result of Panagram Counter by Scolak\n");
+    println!("Timetaken:                      {:>3} ms", (_endtime - _starttime));
+    println!("Amount of non Panagrams:        {:>3}", _counter.none);    
+    println!("Amount of imperfect Panagrams:  {:>3}", _counter.imperfect);
+    println!("Amount of perfect Panagrams:    {:>3}", _counter.perfect);
 
 }
 
