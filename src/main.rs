@@ -31,8 +31,8 @@ fn get_distribution(stringin: &str) -> HashMap<char, u64> {
 }
 
 
-#[derive(Debug, Clone)]
-#[repr(u8)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
+#[repr(usize)]
 enum PangramStatus {
     NotEventClose = 0,
     Imperfect = 1,
@@ -77,8 +77,6 @@ fn main() {
         }
     };
 
-    let _starttime = epoch();
-
     if !_contents.is_empty() {
 
         let _json_version: Value = match serde_json::from_str(&_contents) {
@@ -87,6 +85,8 @@ fn main() {
                 Value::Null
             }
         };
+
+        let _starttime = epoch();
 
         if _json_version != Value::Null {
 
@@ -104,15 +104,19 @@ fn main() {
 
         }
 
+        let _endtime = epoch();    
+
+        println!("Result of Panagram Counter by Scolak\n");
+        println!("Timetaken:                      {:>3} ms", (_endtime - _starttime));
+        println!("Amount of non Panagrams:        {:>3}", _counters[PangramStatus::NotEventClose as usize]);    
+        println!("Amount of imperfect Panagrams:  {:>3}", _counters[PangramStatus::Imperfect as usize]);
+        println!("Amount of perfect Panagrams:    {:>3}", _counters[PangramStatus::Perfect as usize]);
+
+    } else {
+
+        println!("Failed to read file - aborting");
+
     }
-
-    let _endtime = epoch();    
-
-    println!("Result of Panagram Counter by Scolak\n");
-    println!("Timetaken:                      {:>3} ms", (_endtime - _starttime));
-    println!("Amount of non Panagrams:        {:>3}", _counters[PangramStatus::NotEventClose as usize]);    
-    println!("Amount of imperfect Panagrams:  {:>3}", _counters[PangramStatus::Imperfect as usize]);
-    println!("Amount of perfect Panagrams:    {:>3}", _counters[PangramStatus::Perfect as usize]);
 
 }
 
