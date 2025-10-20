@@ -10,7 +10,7 @@ static CHARSTOCHECK: &str = "abcdefghijklmnopqrstuvwxyz";
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
 #[repr(usize)]
 enum PangramStatus {
-    NotEventClose = 0,
+    NotEvenClose = 0,
     Imperfect = 1,
     Perfect = 2
 }
@@ -47,7 +47,7 @@ fn check_pangram(distin: HashMap<char, u64>) -> PangramStatus {
         }
     }
     if _count != 26 {
-        PangramStatus::NotEventClose        
+        PangramStatus::NotEvenClose        
     } else if _total == 26 {
         PangramStatus::Perfect        
     } else {
@@ -103,7 +103,7 @@ fn main() {
 
             println!("Result of Panagram Counter by Scolak\n");
             println!("Time taken:                     {:>3} ms", (_endtime - _starttime));
-            println!("Amount of non Panagrams:        {:>3}", _counters[PangramStatus::NotEventClose as usize]);    
+            println!("Amount of non Panagrams:        {:>3}", _counters[PangramStatus::NotEvenClose as usize]);    
             println!("Amount of imperfect Panagrams:  {:>3}", _counters[PangramStatus::Imperfect as usize]);
             println!("Amount of perfect Panagrams:    {:>3}", _counters[PangramStatus::Perfect as usize]);
 
