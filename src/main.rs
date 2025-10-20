@@ -35,7 +35,7 @@ fn get_distribution(stringin: &str) -> HashMap<char, u64> {
 #[repr(u8)]
 enum PangramStatus {
     NotEventClose = 0,
-    Inperfect = 1,
+    Imperfect = 1,
     Perfect = 2
 }
 
@@ -57,17 +57,17 @@ fn check_pangram(distin: HashMap<char, u64>) -> PangramStatus {
     } else if _total == 26 {
         PangramStatus::Perfect        
     } else {
-        PangramStatus::Inperfect
+        PangramStatus::Imperfect
     }
     
 }
 
 
-#[derive(Debug, Default)]
+#[derive(Default)]
 struct PanagramCounter {
-    none: u16,
-    perfect: u16,
-    imperfect: u16,
+    none: u64,
+    perfect: u64,
+    imperfect: u64,
 }
 
 
@@ -109,7 +109,7 @@ fn main() {
                 let _dist = get_distribution(&_strval);
 
                 match check_pangram(_dist) {
-                    PangramStatus::Inperfect => {
+                    PangramStatus::Imperfect => {
                         _counter.imperfect += 1;
                     },
                     PangramStatus::Perfect => {
