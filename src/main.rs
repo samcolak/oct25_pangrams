@@ -52,18 +52,14 @@ fn check_pangram(distin: HashMap<char, u64>) -> PangramStatus {
         }
     }
 
-    if _count == 26 {
-        
-        if _total == 26 {
-            PangramStatus::Perfect        
-        } else {
-            PangramStatus::Inperfect
-        }
-
+    if _count != 26 {
+        PangramStatus::NotEventClose        
+    } else if _total == 26 {
+        PangramStatus::Perfect        
     } else {
-        PangramStatus::NotEventClose
+        PangramStatus::Inperfect
     }
-
+    
 }
 
 
