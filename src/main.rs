@@ -32,17 +32,13 @@ fn get_uniques(stringin: &str) -> Vec<char> {
 
 
 fn get_distribution(stringin: &str) -> Vec<(char, usize)> {
-
     let _lower = stringin.to_lowercase();
     let _uniques = get_uniques(&_lower);
     let _allchars: Vec<char> = _lower.chars().collect();
-
     let mut _frequency: Vec<(char, usize)> = _uniques.into_iter()
         .map(|x| (x, _allchars.iter().filter(|&n| *n == x).count()))
         .collect();
-
-    _frequency
-    
+    _frequency   
 }
 
 
