@@ -78,9 +78,7 @@ fn main() {
 
         let _json_version: Value = match serde_json::from_str(&_contents) {
             Ok(_c) => _c,
-            Err(_e) => {
-                Value::Null
-            }
+            Err(_e) => Value::Null
         };
  
         if _json_version != Value::Null {
