@@ -1,7 +1,5 @@
 
-#![allow(clippy::never_loop)]
-
-use std::{collections::HashMap, fs, time::SystemTime};
+use std::{fs, time::SystemTime};
 use serde_json::{Value};
 
 
@@ -34,8 +32,6 @@ fn get_uniques(stringin: &str) -> Vec<char> {
 
 
 fn get_distribution(stringin: &str) -> Vec<(char, usize)> {
-
-    let mut _map: HashMap<char, u64> = HashMap::new();
 
     let _lower = stringin.to_lowercase();
     let _uniques = get_uniques(&_lower);
