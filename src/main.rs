@@ -26,7 +26,7 @@ fn epoch() -> i64 {
 fn get_uniques(stringin: &str) -> Vec<char> {
     let mut _r: Vec<char> = stringin.chars().collect();
     _r.sort();
-    _r.dedup();
+    _r.dedup(); // dedup doesnt work unless the list is sorted...
     _r
 }
 
