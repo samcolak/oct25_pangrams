@@ -97,11 +97,11 @@ fn main() {
 
             for _listitem in _array_of_strings {
 
-                let _strval = _listitem.as_str().unwrap().to_string();
-                let _dist = get_distribution(&_strval);
-                let _state = check_pangram(_dist);
-
-                _counters[_state as usize] += 1;
+                if let Some(_v) = _listitem.as_str() {
+                    let _dist = get_distribution(_v);
+                    let _state = check_pangram(_dist);
+                    _counters[_state as usize] += 1;
+                }
 
             }
 
